@@ -1,0 +1,21 @@
+{% assign comment = include.comment %}
+{% assign number = include.number %}
+
+<article class="comment">
+  <header class="comment-header">
+    <a name="comment-{{ number }}"></a>
+    {% if comment.title != nil %}
+    <div class="comment-title">{{ comment.title }}</div>
+    {% endif %}
+    {% if comment.from != nil %}
+    <div class="comment-from">
+      <a href="{{ comment.from }}">{{ comment.from }}</a>
+    </div>
+    {% endif %}
+    {% include dates.html class='comment-dates' published=comment.published updated=comment.updated %}
+  </header>
+  <div class="comment-content">
+    {{ comment.content | markdownify }}
+  </div>
+</article>
+

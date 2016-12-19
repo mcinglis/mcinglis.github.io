@@ -1,0 +1,57 @@
+{% assign entry = include.entry %}
+
+<entry{% if entry.language != nil %}xml:lang="{{ entry.language }}"{% endif %}>
+
+  <title>{{ entry.title | xml_escape }}</title>
+
+  <id>{{ site.url }}{{ entry.url }}</id>
+
+  {% assign published = entry.date | date_to_xmlschema %}
+  <published>{{ published }}</published>
+  {% if entry.updated == nil %}
+  <updated>{{ published }}</updated>
+  {% else %}
+  <updated>{{ entry.updated }}</updated>
+  {% endif %}
+
+  {% capture link %}{% if entry.link != nil %}{{ entry.link }}{% else %}{{ site.url }}{{ entry.url }}{% endif %}{% endcapture %}
+  <link href="{{ link | xml_escape }}" />
+
+  {% if entry.author != nil %}
+  <author>
+      <name>{{ entry.author.name }}</name>
+      <uri>{{ entry.author.url }}</uri>
+      <email>{{ entry.author.email }}</email>
+  </author>
+  {% endif %}
+
+  {% for category in entry.categories %}
+  <category term="{{ category }}" />
+  {% endfor %}
+  {% for tag in entry.tags %}
+  <category term="{{ tag }}" />
+  {% endfor %}
+
+  {% capture comments_link %}
+    <a href="{{ site.url }}{{ entry.url }}#comments">comments</a>
+  {% endcapture %}
+
+  {% capture content %}
+    {% assign content_len = entry.content | strip | size %}
+    {% if content_len == 0 %}
+      {{ comments_link }}
+      {% include comments.html show_header=false page=entry separator='<hr>' %}
+    {% else %}
+      {{ entry.content }}
+      {{ comments_link }}
+    {% endif %}
+  {% endcapture %}
+
+  {% if content | number_of_words != 0 %}
+  <content type="html">
+    {{ content | xml_escape }}
+  </content>
+  {% endif %}
+
+</entry>
+

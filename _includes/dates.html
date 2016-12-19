@@ -1,0 +1,19 @@
+{% assign class = include.class %}
+{% assign post = include.post %}
+{% assign show_updated = include.show_updated %}
+
+{% if post.date != nil or post.updated != nil %}
+<div class="{{ class }}">
+  {% if post.date != nil %}
+    {% capture date_class %}{{ class }}-date{% endcapture %}
+    {% include date.html class=date_class date=post.date %}
+  {% endif %}
+
+  {% if post.updated != nil %}
+    {% if post.date != nil %} - {% endif %}
+    {% capture updated_class %}{{ class }}-updated{% endcapture %}
+    updated {% include date.html class=updated_class date=post.updated %}
+  {% endif %}
+</div>
+{% endif %}
+

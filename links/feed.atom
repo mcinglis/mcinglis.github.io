@@ -1,0 +1,9 @@
+---
+layout: feed
+title: 'Malcolm Inglis / Links'
+subtitle: 'Linkblog of a software developer'
+id: 'http://minglis.id.au/links/'
+---
+
+{% include feed-entries.html entries=site.categories.links %}
+

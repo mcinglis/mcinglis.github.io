@@ -1,0 +1,9 @@
+---
+layout: feed
+title: 'Malcolm Inglis / Notes'
+subtitle: 'Notes of a software developer'
+id: 'http://minglis.id.au/notes/'
+---
+
+{% include feed-entries.html entries=site.categories.notes %}
+

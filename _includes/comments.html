@@ -1,0 +1,31 @@
+{% assign show_title  = include.show_title %}
+{% assign show_header = include.show_header %}
+{% assign page        = include.page %}
+{% assign separator   = include.separator %}
+
+<section class="comments">
+  <a name="comments"></a>
+  {% if show_header != false %}
+  <header class="comments-header">
+    {% if show_title != false %}
+    <h1 class="comments-title">
+      {% if page.link != nil %}
+      Others' comments
+      {% else %}
+      Comments
+      {% endif %}
+    </h1>
+    {% endif %}
+    {% capture mailto_subject %}Comment on "{{ page.title }}"{% endcapture %}
+    <p class="comments-prompt">
+      <a href="mailto:{{ site.author.email }}?subject={{ mailto_subject | uri_escape }}">Email me</a> to comment, and I might post it here. I won't post your details unless you ask me to.
+    </p>
+  </header>
+  {% endif %}
+  {% for comment in page.comments %}
+    {% if separator != nil %}
+      {{ separator }}
+    {% endif %}
+    {% include comment.html comment=comment number=forloop.index %}
+  {% endfor %}
+</section>

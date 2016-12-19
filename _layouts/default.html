@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="{% if page.language == nil %}{{ site.language }}{% else %}{{ page.language }}{% endif %}">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/style.css">
+    {% capture license_url %}{% if page.license.url == nil %}{{ site.license.url }}{% else %}{{ page.license.url }}{% endif %}{% endcapture %}
+    <link rel="license" href="{{ license_url }}">
+    {% assign title_sep = '/' %}
+    <title>{% if page.title != nil %}{{ page.title }} {{ title_sep }} {% endif %}{% for c in page.categories %}{{ c | capitalize }} {{ title_sep }} {% endfor %}{{ site.author.name }}</title>
+    {% if page.description %}
+    <meta name="description" content="{{ page.description | xml_escape }}">
+    {% endif %}
+    {% if page.keywords %}
+    <meta name="keywords" content="{{ page.keywords | join: ',' }}">
+    {% endif %}
+    {% if page.author %}
+      {% if page.author.name %}
+    <meta name="author" content="{{ page.author.name }}">
+      {% endif %}
+      {% if page.author.url %}
+    <link rel="author" href="{{ page.author.url }}">
+      {% endif %}
+    {% else %}
+    <meta name="author" content="{{ site.author.name }}">
+    <link rel="author" href="{{ site.url }}">
+    {% endif %}
+    {% for alt in page.alternates %}
+    <link rel="alternate" type="{{ alt[1].type }}" href="{{ alt[1].href }}">
+    {% endfor %}
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="site-header">
+        <div class="sidebar">
+          <div class="site-author">
+            <a class="site-author-picture" href="/">
+              <img src="/picture.jpg">
+            </a>
+            <h1 class="site-author-name"><a href="/">{{ site.author.name }}</a></h1>
+            <p class="site-author-tagline">{{ site.author.tagline }}</p>
+            <p class="site-author-location">
+              in <a href="https://en.wikipedia.org/wiki/Seattle">Seattle</a>, from <a href="https://en.wikipedia.org/wiki/Brisbane">Brisbane</a>
+            </p>
+            <p class="site-author-email">
+              <a href="mailto:{{ site.author.email }}">{{ site.author.email }}</a>
+            </p>
+            <p class="site-author-gpg">
+              (<a href="/{{ site.author.github }}.key">GPG</a>: <code>0xD020F814</code>)
+            </p>
+          </div>
+          <nav class="site-nav">
+            <a href="/links/index.html">/links</a>
+            <a href="/notes/index.html">/notes</a>
+            <a href="/projects/index.html">/projects</a>
+          </nav>
+        </div>
+        <div class="breadcrumbs">
+          <a href="/">home</a>
+          (<a rel="alternate" type="application/atom+xml" href="/feed.atom">feed</a>)
+          {% for c in page.categories %}
+          {% if forloop.first %} / {% endif %}
+          {% assign path = page.categories limit:forloop.index | join: '/' %}
+          <a href="/{{ path }}/index.html">{{ c }}</a>
+          (<a rel="alternate" type="application/atom+xml" href="/{{ path }}/feed.atom">feed</a>)
+          {% unless forloop.last %} / {% endunless %}
+          {% endfor %}
+        </div>
+      </header>
+      <main class="content-wrapper" role="main">
+        {% if page.hide_header != true %}
+        <header class="content-header">
+          {% if page.title != nil %}
+          <h1 class="content-title">{{ page.title }}</h1>
+          {% endif %}
+          {% if page.link != nil %}
+          <div class="content-link">
+            <a href="{{ page.link }}">{{ page.link }}</a>
+          </div>
+          {% endif %}
+          {% include dates.html class='content-dates' post=page show_updated=true %}
+        </header>
+        {% endif %}
+
+        {% assign content_len = content | strip | size %}
+
+        {% if content_len != 0 %}
+        <div class="content">
+          {{ content }}
+        </div>
+
+        {% if page.hide_license != true %}
+        <div class="license">
+          {% if page.license != nil %}
+          {{ page.license }}
+          {% else %}
+          {{ site.license.message }}
+          {% endif %}
+        </div>
+        {% endif %}
+
+        {% endif %}
+
+        {% if page.hide_comments != true %}
+          {% if content_len == 0 %}
+            {% assign show_title = false %}
+          {% else %}
+            {% assign show_title = true %}
+          {% endif %}
+          {% include comments.html show_title=show_title page=page %}
+        {% endif %}
+
+      </main>
+    </div>
+  </body>
+</html>

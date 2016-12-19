@@ -1,0 +1,13 @@
+{% assign class = include.class %}
+{% assign idate = include.date %}
+
+{% if idate | date: '%H:%M' == '00:00' %}
+  {% assign title = idate | date: '%A %-d %B %Y' %}
+{% else %}
+  {% assign title = idate | date: '%A %-d %B %Y %I:%M %p' %}
+{% endif %}
+
+<time class="{{ class }}" datetime="{{ idate | date_to_rfc822 }}" title="{{ title }}">
+  {{ include.date | date: '%-d %B %Y' }}
+</time>
+

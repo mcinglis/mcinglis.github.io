@@ -1,0 +1,9 @@
+---
+layout: feed
+title: 'Malcolm Inglis / CSSE2002'
+subtitle: 'Materials for CSSE2002 ("Programming in the Large") taught at the University of Queensland in 2013.'
+id: 'http://minglis.id.au/csse2002/'
+---
+
+{% include feed-entries.html entries=site.categories.csse2002 %}
+

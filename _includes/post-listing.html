@@ -1,0 +1,45 @@
+{% assign post = include.post %}
+
+{% if post.categories[0] == 'links' %}
+  {% assign is_link = true %}
+{% else %}
+  {% assign is_link = false %}
+{% endif %}
+
+<article class="post-listing {% if is_link %} post-listing-link {% endif %}">
+  {% if post.categories | size > page.categories.size %}
+  <span class="post-listing-categories">
+      {% for c in post.categories offset:page.categories.size %}
+      <a href="/{{ post.categories limit:forloop.index | join: '/' }}/index.html">{{ c }}</a> /
+      {% endfor %}
+  </span>
+  {% endif %}
+  <div class="post-listing-title-wrapper">
+    <h1 class="post-listing-title">
+      <a {% if is_link %}
+             href="{{ post.link }}" name="{{ post.link | url_escape }}"
+         {% else %}
+             href="{{ post.url }}"
+             {% endif %}>{{ post.title }}</a>
+    </h1>
+    {% if is_link %}
+      {% assign protocol = post.link | split: ':' | first %}
+      {% if 'http,https,ftp,ftps' | split: ',' contains protocol %}
+        {% assign split = post.link | split: '/' %}
+        {% assign domain = split[2] %}
+    <span class="post-listing-domain">
+      (<a href="{{ protocol }}://{{ domain }}">{{ domain }}</a>)
+    </span>
+      {% endif %}
+    <span class="post-listing-comments">
+      (<a href="{{ post.url }}">comments</a>)
+    </span>
+    {% endif %}
+  </div>
+  {% if is_link %}
+    {% assign updated = nil %}
+  {% else %}
+    {% assign updated = post.updated %}
+  {% endif %}
+  {% include dates.html class='post-listing-dates' post=post %}
+</article>

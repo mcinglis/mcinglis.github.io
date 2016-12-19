@@ -1,0 +1,83 @@
+---
+layout: default
+title: OpenSearch Plugins
+
+hide_comments: true
+
+plugins:
+  - Amazon
+  - arXiv
+  - Debian Packages
+  - DuckDuckGo
+  - eBay
+  - GitHub
+  - Google
+  - Google Images
+  - Google Maps
+  - Google News
+  - Gutenberg
+  - Hacker News
+  - IMDb
+  - Last.fm
+  - OpenStreetMap
+  - Reddit
+  - Twitter
+  - Wayback Machine
+  - Wikibooks
+  - Wikipedia
+  - Wikiquote
+  - Wikivoyage
+  - Wiktionary
+  - YouTube
+---
+
+{% capture content %}
+
+These are the [OpenSearch](http://www.opensearch.org/) plugins I've created that:
+
+1. Use HTTPS where possible.
+2. Make GET requests, so that the search result page URLs are copy-and-pasteable.
+3. Send only the parameters required for the search, and none of the analytics or tracking parameters included by many other search plugins (e.g. `client=firefox` or `src=debian`).
+4. Load the result pages (and the default search forms) directly, rather than loading them via redirects.
+5. Have standard and simple names, like "DuckDuckGo", or "Wikipedia".
+6. Have all updated icons, and the icons are embedded within the XML itself, so your client won't be coerced into randomly communicating with their server to check for new icons.
+6. Avoid any other superfluous server communication, such as search updating or autocompletion.
+
+You can browse the [plugin source code](https://github.com/{{ site.author.github }}/{{ site.author.github }}.github.io/tree/master/opensearch-plugins/) directly on GitHub, or, if you're using a Firefox-based browser, you can use the installation links below.
+
+You can <a href="#" id="opensearch-plugin-install-all">install all</a> the plugins together, so you can just "add" or "cancel" each installation popup as desired. Otherwise, you can just click each individual item:
+
+<ul>
+{% for p in page.plugins %}
+{% capture url %}/opensearch-plugins/{{ p | downcase | split: ' ' | join: '-' }}.xml{% endcapture %}
+<li><a class="opensearch-plugin-link" href="{{ url }}">{{ p }}</a></li>
+{% endfor %}
+</ul>
+
+{% endcapture %}
+
+{{ content | markdownify }}
+
+<script type="text/javascript">
+  var plugin_links = document.getElementsByClassName('opensearch-plugin-link');
+
+  // Setup each plugin link.
+  for ( var i = 0; i < plugin_links.length; i += 1 ) {
+      var anchor = plugin_links[ i ];
+      anchor.addEventListener( 'click', function( ev ) {
+          ev.preventDefault();
+          window.external.AddSearchProvider( ev.target.href );
+      } );
+  }
+
+  // Setup the "install all" link.
+  var install_all = document.getElementById('opensearch-plugin-install-all')
+  install_all.addEventListener( 'click', function( ev ) {
+      ev.preventDefault();
+      // From back to front because the popups will overlap.
+      for ( var i = plugin_links.length - 1; i >= 0; i -= 1 ) {
+          window.external.AddSearchProvider( plugin_links[ i ].href );
+      }
+  } );
+</script>
+

@@ -1,0 +1,9 @@
+---
+layout: feed
+title: Malcolm Inglis
+subtitle: The website of a student software developer
+id: http://minglis.id.au/
+---
+
+{% include feed-entries.html entries=site.posts %}
+
