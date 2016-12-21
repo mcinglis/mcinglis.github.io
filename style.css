@@ -19,7 +19,7 @@ code {
 .sidebar {
     position: fixed;
     right: 1rem;
-    margin-top: 3rem;
+    margin-top: 2rem;
     text-align: center;
     width: 18rem;
 }
@@ -228,19 +228,33 @@ code {
         position: static;
         margin-top: 0;
         text-align: start;
-        margin-bottom: 3rem;
+        margin-bottom: 1rem;
         width: auto;
+    }
+
+    .site-author {
+        margin-bottom: 2rem;
+    }
+
+    .site-author h1 {
+        margin: 0;
+    }
+
+    .site-author p {
+        margin: 0;
     }
 
     .site-author-picture {
         float: left;
         margin-right: 1rem;
+        margin-top: 0.3rem;
     }
 
     .site-nav {
-        border-top: 1px solid black;
+        margin-bottom: 2rem;
+        border-top: 1px solid #aaaaaa;
         padding: 1rem;
-        border-bottom: 1px solid black;
+        border-bottom: 1px solid #aaaaaa;
     }
 
     .site-nav a {
