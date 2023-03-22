@@ -59,7 +59,8 @@
           (<a rel="alternate" type="application/atom+xml" href="/feed.atom">feed</a>)
           {% for c in page.categories %}
           {% if forloop.first %} / {% endif %}
-          {% capture path %}{{ page.categories limit: forloop.index | join: '/' }}{% endcapture %}
+          {% assign index = forloop.index %}
+          {% assign path = page.categories limit: index | join: '/' %}
           <a href="/{{ path }}/index.html">{{ c }}</a>
           (<a rel="alternate" type="application/atom+xml" href="/{{ path }}/feed.atom">feed</a>)
           {% unless forloop.last %} / {% endunless %}
